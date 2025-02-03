@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Мои маршруты</h1>
+<a href="{% url 'route_create' %}" class="btn btn-primary mb-3">Создать новый маршрут</a>
+
+{% if routes %}
+    <ul class="list-group">
+        {% for route in routes %}
+            <li class="list-group-item">
+                <a href="{% url 'route_detail' route.pk %}">{{ route.title }}</a>
+                <small class="text-muted"> ({{ route.created_at|date:"d.m.Y" }})</small>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>У вас пока нет маршрутов.</p>
+{% endif %}
+{% endblock %}
