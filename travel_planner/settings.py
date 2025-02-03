@@ -62,6 +62,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'users.backends.EmailOrUsernameAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 ROOT_URLCONF = "travel_planner.urls"
 
 TEMPLATES = [
