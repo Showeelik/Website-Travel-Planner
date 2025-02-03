@@ -43,7 +43,8 @@ LOGOUT_REDIRECT_URL = 'home'
 # Application definition
 
 INSTALLED_APPS = [
-    "users",    
+    "users",
+    "routes",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

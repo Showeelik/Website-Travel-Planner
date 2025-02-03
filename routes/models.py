@@ -23,7 +23,7 @@ class Route(models.Model):
         return self.title
 
 class RouteLocation(models.Model):
-    route = models.ForeignKey(Route, on_delete=models.CASCADE, related_name='locations', verbose_name='Маршрут')
+    route = models.ForeignKey(Route, on_delete=models.CASCADE, related_name='RouteLocation', verbose_name='Маршрут')
     location = models.ForeignKey(Location, on_delete=models.CASCADE, verbose_name='Место')
     order = models.PositiveIntegerField(verbose_name='Порядковый номер')
 
