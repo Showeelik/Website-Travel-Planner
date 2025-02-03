@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ route.title }}</h1>
+<p><strong>Описание:</strong> {{ route.description }}</p>
+<p><strong>Бюджет:</strong> {{ route.budget }} руб.</p>
+<p><strong>Продолжительность:</strong> {{ route.duration }} дней</p>
+<p><small>Создано: {{ route.created_at|date:"d.m.Y H:i" }}</small></p>
+
+<a href="{% url 'route_list' %}" class="btn btn-secondary">Назад к списку</a>
+{% endblock %}

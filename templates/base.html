@@ -11,6 +11,9 @@
         <div class="container">
             <a class="navbar-brand" href="{% url 'home' %}">Travel Planner</a>
             <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'route_list' %}">Мои маршруты</a>
+                </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <form method="post" action="{% url 'logout' %}" style="display: inline;">
