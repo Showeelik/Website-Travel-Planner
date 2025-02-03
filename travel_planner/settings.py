@@ -31,13 +31,13 @@ SECRET_KEY = os.getenv("SECRET_KEY_DJANGO")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
-
+ALLOWED_HOSTS = []
 
 # Users
 AUTH_USER_MODEL = "users.User"
 
-
+LOGIN_REDIRECT_URL = 'home'  # Замените 'home' на имя вашего маршрута главной страницы
+LOGOUT_REDIRECT_URL = 'home'
 
 
 # Application definition
@@ -64,7 +64,6 @@ MIDDLEWARE = [
 
 AUTHENTICATION_BACKENDS = [
     'users.backends.EmailOrUsernameAuthBackend',
-    'django.contrib.auth.backends.ModelBackend',
 ]
 
 ROOT_URLCONF = "travel_planner.urls"
@@ -72,7 +71,7 @@ ROOT_URLCONF = "travel_planner.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -112,6 +111,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        'OPTIONS': {
+            'min_length': 8,
+        }
     },
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
