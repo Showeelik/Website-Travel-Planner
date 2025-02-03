@@ -34,9 +34,16 @@ DEBUG = os.getenv("DEBUG")
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
 
+# Users
+AUTH_USER_MODEL = "users.User"
+
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
+    "users",    
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
