@@ -25,6 +25,7 @@ def route_create(request):
             route = form.save(commit=False)
             route.user = request.user
             route.save()
+            
             return redirect('route_list')
     else:
         form = RouteForm()
@@ -45,6 +46,11 @@ def route_detail(request, pk):
             review.route = route
             try:
                 review.save()
+                
+                # Отправляем уведомление владельцу маршрута
+                if route.user != request.user:
+                    send_notification.delay(route.user.id, f"Новый отзыв на ваш маршрут: {route.title}")
+                
                 messages.success(request, "Отзыв успешно добавлен!")
                 return redirect('route_detail', pk=pk)
             except IntegrityError:

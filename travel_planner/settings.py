@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "users",
     "routes",
     "reviews",
+    "notifications",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
