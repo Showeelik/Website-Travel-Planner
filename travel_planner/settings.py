@@ -39,6 +39,18 @@ AUTH_USER_MODEL = "users.User"
 LOGIN_REDIRECT_URL = 'home'  # Замените 'home' на имя вашего маршрута главной страницы
 LOGOUT_REDIRECT_URL = 'home'
 
+# Redis settings
+REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+REDIS_PORT = os.getenv("REDIS_PORT", "6379")
+
+# Celery settings
+CELERY_BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}"
+CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:{REDIS_PORT}"
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
 
 # Application definition
 
