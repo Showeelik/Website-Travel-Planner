@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "routes",
     "reviews",
     "notifications",
+    'rest_framework',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
