@@ -2,6 +2,7 @@ from rest_framework import generics, permissions
 from django.db import IntegrityError
 
 from routes.models import Route
+from notifications.tasks import send_notification
 from .models import Review
 from .serializers import ReviewSerializer
 from rest_framework.exceptions import ValidationError

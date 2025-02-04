@@ -1,61 +1,80 @@
 from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, ListView, CreateView
+
+from notifications.tasks import send_notification
 from .models import Route
 from reviews.forms import ReviewForm
 from .forms import RouteForm
 
-@login_required
-def route_list(request):
+class RouteListView(LoginRequiredMixin, ListView):
     """
     Страница со списком маршрутов пользователя.
     """
-    routes = Route.objects.filter(user=request.user)
-    return render(request, 'routes/route_list.html', {'routes': routes})
+    model = Route
+    template_name = 'routes/route_list.html'
+    context_object_name = 'routes'
 
-@login_required
-def route_create(request):
+    def get_queryset(self):
+        # Показываем только маршруты текущего пользователя
+        return Route.objects.filter(user=self.request.user)
+
+class RouteCreateView(LoginRequiredMixin, CreateView):
     """
     Страница для создания нового маршрута.
     """
-    if request.method == 'POST':
-        form = RouteForm(request.POST)
-        if form.is_valid():
-            route = form.save(commit=False)
-            route.user = request.user
-            route.save()
-            
-            return redirect('route_list')
-    else:
-        form = RouteForm()
+    model = Route
+    form_class = RouteForm
+    template_name = 'routes/route_form.html'
+    success_url = reverse_lazy('route_list')  # Перенаправление после успешного создания
 
-    return render(request, 'routes/route_form.html', {'form': form})
+    def form_valid(self, form):
+        # Привязываем маршрут к текущему пользователю
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
-@login_required
-def route_detail(request, pk):
-    route = get_object_or_404(Route, pk=pk, user=request.user)
-    reviews = route.reviews.all()
+class RouteDetailView(LoginRequiredMixin, DetailView):
+    """
+    Страница с деталями маршрута и формой для создания отзыва.
+    """
+    model = Route
+    template_name = 'routes/route_detail.html'
+    context_object_name = 'route'
 
-    if request.method == 'POST':
+    def get_context_data(self, **kwargs):
+        # Добавляем форму отзыва и список отзывов в контекст
+        context = super().get_context_data(**kwargs)
+        context['reviews'] = self.object.reviews.all()
+        context['form'] = ReviewForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        # Обработка POST-запроса для создания отзыва
+        self.object = self.get_object()
         form = ReviewForm(request.POST)
+
         if form.is_valid():
             review = form.save(commit=False)
             review.user = request.user
-            review.route = route
+            review.route = self.object
+
             try:
                 review.save()
-                
+
                 # Отправляем уведомление владельцу маршрута
-                if route.user != request.user:
-                    send_notification.delay(route.user.id, f"Новый отзыв на ваш маршрут: {route.title}")
-                
+                if self.object.user != request.user:
+                    send_notification.delay(self.object.user.id, f"Новый отзыв на ваш маршрут: {self.object.title}")
+
                 messages.success(request, "Отзыв успешно добавлен!")
-                return redirect('route_detail', pk=pk)
+                return redirect('route_detail', pk=self.object.pk)
             except IntegrityError:
                 messages.error(request, "Вы уже оставили отзыв на этот маршрут.")
-    else:
-        form = ReviewForm()
 
-    return render(request, 'routes/route_detail.html', {'route': route, 'reviews': reviews, 'form': form})
+        # Если форма невалидна, рендерим страницу с ошибками
+        context = self.get_context_data()
+        context['form'] = form
+        return self.render_to_response(context)
