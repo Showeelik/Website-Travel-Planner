@@ -13,3 +13,6 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review by {self.user} on {self.route}"
+
+    class Meta:
+        unique_together = ('user', 'route')
