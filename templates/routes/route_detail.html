@@ -5,7 +5,30 @@
 <p><strong>Описание:</strong> {{ route.description }}</p>
 <p><strong>Бюджет:</strong> {{ route.budget }} руб.</p>
 <p><strong>Продолжительность:</strong> {{ route.duration }} дней</p>
-<p><small>Создано: {{ route.created_at|date:"d.m.Y H:i" }}</small></p>
+
+<h2>Отзывы</h2>
+<h2>Оставить отзыв</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        {{ form.errors }}
+    </div>
+    {% endif %}
+    <button type="submit" class="btn btn-success">Отправить</button>
+</form>
+<ul>
+    {% for review in reviews %}
+        <li>
+            <strong>{{ review.user.username }}</strong> ({{ review.rating }}/5):
+            {{ review.comment }}
+            <small>({{ review.created_at|date:"d.m.Y H:i" }})</small>
+        </li>
+    {% empty %}
+        <p>Нет отзывов.</p>
+    {% endfor %}
+</ul>
 
 <a href="{% url 'route_list' %}" class="btn btn-secondary">Назад к списку</a>
 {% endblock %}
