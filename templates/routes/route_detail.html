@@ -24,6 +24,14 @@
             <strong>{{ review.user.username }}</strong> ({{ review.rating }}/5):
             {{ review.comment }}
             <small>({{ review.created_at|date:"d.m.Y H:i" }})</small>
+            {% if not review.is_read %}
+                <span class="badge bg-danger">Новое</span>
+            {% endif %}
+            <!-- Кнопки только для своих отзывов -->
+            {% if review.user == request.user %}
+            <button onclick="editReview({{ review.id }})">Редактировать</button>
+            <button onclick="deleteReview({{ review.id }})">Удалить</button>
+            {% endif %}
         </li>
     {% empty %}
         <p>Нет отзывов.</p>
@@ -31,4 +39,44 @@
 </ul>
 
 <a href="{% url 'route_list' %}" class="btn btn-secondary">Назад к списку</a>
+<script>
+    function deleteReview(reviewId) {
+        fetch(`/api/routes/{{ route.id }}/reviews/${reviewId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}', // CSRF-токен для защиты от CSRF-атак
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload(); // Обновляем страницу
+            } else {
+                alert('Ошибка при удалении отзыва');
+            }
+        });
+    }
+
+    function editReview(reviewId) {
+        const updatedData = {
+            rating: 4,
+            comment: 'Обновленный комментарий',
+        };
+
+        fetch(`/api/routes/{{ route.id }}/reviews/${reviewId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}', // CSRF-токен для защиты от CSRF-атак
+            },
+            body: JSON.stringify(updatedData),
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload(); // Обновляем страницу
+            } else {
+                alert('Ошибка при обновлении отзыва');
+            }
+        });
+    }
+</script>
 {% endblock %}

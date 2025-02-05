@@ -12,6 +12,9 @@
             <a class="navbar-brand" href="{% url 'home' %}">Travel Planner</a>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'notification_list' %}">Уведомления</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'route_list' %}">Мои маршруты</a>
                 </li>
                 {% if user.is_authenticated %}
