@@ -36,6 +36,7 @@ ALLOWED_HOSTS = []
 # Users
 AUTH_USER_MODEL = "users.User"
 
+LOGIN_URL = '/auth'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
