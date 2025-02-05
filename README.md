@@ -94,10 +94,10 @@ python manage.py runserver
 
 ## Создатель
 
-Проект создан **@Showeelik**.  
+Проект создан **[@Showeelik](https://github.com/Showeelik)**.  
 Если у вас есть вопросы или предложения, свяжитесь со мной:
 - Email: zeezxex2006@mail.ru
-- GitHub: @Showeelik
+- GitHub: **[@Showeelik](https://github.com/Showeelik)**
 
 ---
 
