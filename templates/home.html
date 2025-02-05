@@ -6,12 +6,10 @@
 {% if user %}
     <p>Привет, {{ user.username }}!</p>
     <p>Вы успешно вошли в систему.</p>
-    <a class="btn btn-link">
-        <form method="post" action="{% url 'logout' %}" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-link nav-link">Выйти</button>
-        </form>
-    </a>
+    <form method="post" action="{% url 'logout' %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-link nav-link">Выйти</button>
+    </form>
 {% else %}
     <p>Чтобы начать планировать путешествия, войдите в систему или зарегистрируйтесь:</p>
     <a href="{% url 'login' %}" class="btn btn-primary">Войти</a>
