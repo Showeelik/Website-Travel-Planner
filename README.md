@@ -46,8 +46,8 @@ Travel Planner позволяет пользователям:
 
 ### 1. Клонируйте репозиторий
 ```bash
-git clone https://github.com/yourusername/travel-planner.git
-cd travel-planner
+git clone https://github.com/Showeelik/Website-Travel-Planner.git
+cd Website-Travel-Planner
 ```
 
 ### 2. Установите зависимости
@@ -94,10 +94,10 @@ python manage.py runserver
 
 ## Создатель
 
-Проект создан **[Ваше имя](https://github.com/yourusername)**.  
+Проект создан **@Showeelik**.  
 Если у вас есть вопросы или предложения, свяжитесь со мной:
-- Email: your.email@example.com
-- GitHub: [@yourusername](https://github.com/yourusername)
+- Email: zeezxex2006@mail.ru
+- GitHub: @Showeelik
 
 ---
 
