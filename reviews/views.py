@@ -27,7 +27,8 @@ class ReviewListCreateView(generics.ListCreateAPIView):
 
         # Отправляем уведомление владельцу маршрута
         if route.user != user:  # Не отправлять уведомление самому себе
-            send_notification.delay(route.user.id, f"Новый отзыв на ваш маршрут: {route.title}")
+            send_notification(route.user.id, f"Новый отзыв на ваш маршрут: {route.title}")
+            
 class ReviewDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     Получить, обновить или удалить отзыв.

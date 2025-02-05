@@ -67,7 +67,7 @@ class RouteDetailView(LoginRequiredMixin, DetailView):
 
                 # Отправляем уведомление владельцу маршрута
                 if self.object.user != request.user:
-                    send_notification.delay(self.object.user.id, f"Новый отзыв на ваш маршрут: {self.object.title}")
+                    send_notification(self.object.user.id, f"Новый отзыв на ваш маршрут: {self.object.title}")
 
                 messages.success(request, "Отзыв успешно добавлен!")
                 return redirect('route_detail', pk=self.object.pk)
